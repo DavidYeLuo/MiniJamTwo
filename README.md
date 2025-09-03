@@ -1,5 +1,6 @@
 # [TODO: Game Title]
-**Jam Theme:** [TODO: Jam Theme]
+**Jam Theme:** Corruption  
+**Special Item:** Guitar  
 **Jam Schedule:** 8/31/25 to 9/07/25
 **jam:** [itch.io/jam/jame-gam-53](https://itch.io/jam/jame-gam-53)
 
