@@ -15,10 +15,75 @@ public static class PlayerSystem
             info.gameObjects[i] = spawn;
         }
         info.entities = new Entity[capacity];
+
         info.positions = new Vector3[capacity];
         info.wishDirections = new Vector3[capacity];
+        info.velocities = new Vector3[capacity];
+        for (int i = 0; i < capacity; i++)
+        {
+            info.velocities[i] = Vector3.zero;
+        }
+        info.baseSpeed = new float[capacity];
+        info.bonusSpeed = new float[capacity];
+
+        info.upKeys = new KeyCode[capacity];
+        info.downKeys = new KeyCode[capacity];
+        info.leftKeys = new KeyCode[capacity];
+        info.rightKeys = new KeyCode[capacity];
 
         info.size = 0;
         info.capacity = capacity;
+    }
+
+    public static void UpdateWishDirection(ref PlayerInfo info)
+    {
+        KeyCode[] keys = info.upKeys;
+        for (int i = 0; i < info.size; i++)
+        {
+            if (Input.GetKeyDown(keys[i]))
+            {
+                info.wishDirections[i].y += 1.0f;
+            }
+            if (Input.GetKeyUp(keys[i]))
+            {
+                info.wishDirections[i].y += -1.0f;
+            }
+        }
+        keys = info.downKeys;
+        for (int i = 0; i < info.size; i++)
+        {
+            if (Input.GetKeyDown(keys[i]))
+            {
+                info.wishDirections[i].y += -1.0f;
+            }
+            if (Input.GetKeyUp(keys[i]))
+            {
+                info.wishDirections[i].y += 1.0f;
+            }
+        }
+        keys = info.leftKeys;
+        for (int i = 0; i < info.size; i++)
+        {
+            if (Input.GetKeyDown(keys[i]))
+            {
+                info.wishDirections[i].x += -1.0f;
+            }
+            if (Input.GetKeyUp(keys[i]))
+            {
+                info.wishDirections[i].x += 1.0f;
+            }
+        }
+        keys = info.rightKeys;
+        for (int i = 0; i < info.size; i++)
+        {
+            if (Input.GetKeyDown(keys[i]))
+            {
+                info.wishDirections[i].x += 1.0f;
+            }
+            if (Input.GetKeyUp(keys[i]))
+            {
+                info.wishDirections[i].x += -1.0f;
+            }
+        }
     }
 }

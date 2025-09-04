@@ -9,6 +9,8 @@ public class GameManger : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private int activePlayer;
     [SerializeField] private int maxPlayer;
+    [SerializeField] private PlayerInputs[] playerInputs;
+    [SerializeField] private float playerBaseSpeed;
     private PlayerInfo playerInfo;
 
     [Space]
@@ -27,6 +29,18 @@ public class GameManger : MonoBehaviour
         PlayerSystem.Init(ref playerInfo, playerPrefab, maxPlayer);
         BulletSystem.Init(ref bulletInfo, bulletPrefab, maxBullets);
 
+        for (int i = 0; i < activePlayer; i++)
+        {
+            playerInfo.gameObjects[i].SetActive(true);
+            playerInfo.baseSpeed[i] = playerBaseSpeed;
+            // Bind playerInput to an entity
+            playerInfo.upKeys[i] = playerInputs[i].upKey;
+            playerInfo.downKeys[i] = playerInputs[i].downKey;
+            playerInfo.leftKeys[i] = playerInputs[i].leftKey;
+            playerInfo.rightKeys[i] = playerInputs[i].rightKey;
+        }
+        playerInfo.size = activePlayer;
+
         bulletInfo.size = maxBullets / 2;
         HelperSystem.RandomizeVectors(bulletInfo.positions, bulletInfo.size, new Vector2(-10, 10));
         for (int i = 0; i < bulletInfo.size; i++)
@@ -38,16 +52,14 @@ public class GameManger : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        Vector2 randomBoundary = new Vector2(-1.0f, 1.0f);
-        float speed = 2 * Time.fixedDeltaTime;
-
-        HelperSystem.RandomizeVectors(bulletInfo.wishDirections, bulletInfo.size, randomBoundary);
-        HelperSystem.MoveGameObject(bulletInfo.gameObjects, bulletInfo.wishDirections, speed, bulletInfo.size);
+        HelperSystem.UpdateVelocity(playerInfo.velocities, playerInfo.wishDirections, playerInfo.baseSpeed, playerInfo.bonusSpeed, playerInfo.size, Time.fixedDeltaTime);
+        HelperSystem.UpdatePosition(playerInfo.positions, playerInfo.velocities, playerInfo.size);
+        HelperSystem.MoveGameObject(playerInfo.gameObjects, playerInfo.positions, playerInfo.velocities, playerInfo.size);
     }
     // Update is called once per frame
     void Update()
     {
+        PlayerSystem.UpdateWishDirection(ref playerInfo);
     }
 }
 
@@ -63,12 +75,37 @@ public static class HelperSystem
             vectors[i].y = y;
         }
     }
-    public static void MoveGameObject(GameObject[] gameObjects, Vector3[] wishDirection, float speed, int size)
+    public static void UpdateVelocity(Vector3[] velocities, Vector3[] wishDirections, float[] baseSpeeds, float[] bonusSpeeds, int size, float deltaTime)
     {
         for (int i = 0; i < size; i++)
         {
-            Vector3 velocity = wishDirection[i].normalized * speed;
-            gameObjects[i].transform.position += velocity;
+            float speed = baseSpeeds[i] + bonusSpeeds[i];
+            speed *= deltaTime;
+            velocities[i] = wishDirections[i].normalized * speed;
         }
     }
+    public static void UpdatePosition(Vector3[] positions, Vector3[] velocities, int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            positions[i] += velocities[i];
+        }
+    }
+    public static void MoveGameObject(GameObject[] gameObjects, Vector3[] positions, Vector3[] velocities, int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            gameObjects[i].transform.position = positions[i];
+        }
+    }
+}
+
+// Helps with making it show up in the inspector
+[System.Serializable]
+public struct PlayerInputs
+{
+    public KeyCode upKey;
+    public KeyCode downKey;
+    public KeyCode leftKey;
+    public KeyCode rightKey;
 }

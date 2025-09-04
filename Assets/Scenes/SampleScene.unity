@@ -444,8 +444,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7529538154089312735, guid: 023853d8613035b569c5b4e8f549ed9c, type: 3}
-  activePlayer: 1
+  activePlayer: 2
   maxPlayer: 4
+  playerInputs:
+  - upKey: 119
+    downKey: 115
+    leftKey: 97
+    rightKey: 100
+  - upKey: 273
+    downKey: 274
+    leftKey: 276
+    rightKey: 275
+  playerBaseSpeed: 5
   bulletPrefab: {fileID: 6850314567491524841, guid: 2810a42e77b4927e2b6a507cf5ba6e8e, type: 3}
   maxBullets: 64
 --- !u!4 &1127323649
