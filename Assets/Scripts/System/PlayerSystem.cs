@@ -14,9 +14,9 @@ public static class PlayerSystem
             spawn.SetActive(false);
             info.gameObjects[i] = spawn;
         }
-        info.entities = new Array<Entity>(capacity);
-        info.positions = new Array<Vector3>(capacity);
-        info.wishDirections = new Array<Vector3>(capacity);
+        info.entities = new Entity[capacity];
+        info.positions = new Vector3[capacity];
+        info.wishDirections = new Vector3[capacity];
 
         info.size = 0;
         info.capacity = capacity;

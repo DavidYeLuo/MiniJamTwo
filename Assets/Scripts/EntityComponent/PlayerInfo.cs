@@ -6,9 +6,9 @@ using ECS;
 public struct PlayerInfo
 {
     public GameObject[] gameObjects;
-    public Array<Entity> entities;
-    public Array<Vector3> positions;
-    public Array<Vector3> wishDirections;
+    public Entity[] entities;
+    public Vector3[] positions;
+    public Vector3[] wishDirections;
 
     public int size; // Active entities
     public int capacity;
