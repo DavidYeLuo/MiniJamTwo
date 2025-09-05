@@ -25,16 +25,33 @@ public static class PlayerSystem
         }
         info.baseSpeed = new float[capacity];
         info.bonusSpeed = new float[capacity];
+        info.wishFire = new bool[capacity];
+        info.fireCooldown = new float[capacity];
 
         info.upKeys = new KeyCode[capacity];
         info.downKeys = new KeyCode[capacity];
         info.leftKeys = new KeyCode[capacity];
         info.rightKeys = new KeyCode[capacity];
+        info.fireKeys = new KeyCode[capacity];
 
         info.size = 0;
         info.capacity = capacity;
     }
 
+    public static void UpdateWishFire(ref PlayerInfo info)
+    {
+        for (int i = 0; i < info.size; i++)
+        {
+            if (Input.GetKeyDown(info.fireKeys[i]))
+            {
+                info.wishFire[i] = true;
+            }
+            if (Input.GetKeyUp(info.fireKeys[i]))
+            {
+                info.wishFire[i] = false;
+            }
+        }
+    }
     public static void UpdateWishDirection(ref PlayerInfo info)
     {
         KeyCode[] keys = info.upKeys;

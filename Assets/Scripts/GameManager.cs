@@ -38,6 +38,7 @@ public class GameManger : MonoBehaviour
             playerInfo.downKeys[i] = playerInputs[i].downKey;
             playerInfo.leftKeys[i] = playerInputs[i].leftKey;
             playerInfo.rightKeys[i] = playerInputs[i].rightKey;
+            playerInfo.fireKeys[i] = playerInputs[i].fireKey;
         }
         playerInfo.size = activePlayer;
 
@@ -52,6 +53,8 @@ public class GameManger : MonoBehaviour
 
     void FixedUpdate()
     {
+        HelperSystem.UpdateFire(playerInfo.wishFire, playerInfo.fireCooldown, playerInfo.size, ref bulletInfo, Time.fixedDeltaTime);
+
         HelperSystem.UpdateVelocity(playerInfo.velocities, playerInfo.wishDirections, playerInfo.baseSpeed, playerInfo.bonusSpeed, playerInfo.size, Time.fixedDeltaTime);
         HelperSystem.UpdatePosition(playerInfo.positions, playerInfo.velocities, playerInfo.size);
         HelperSystem.MoveGameObject(playerInfo.gameObjects, playerInfo.positions, playerInfo.velocities, playerInfo.size);
@@ -59,6 +62,7 @@ public class GameManger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerSystem.UpdateWishFire(ref playerInfo);
         PlayerSystem.UpdateWishDirection(ref playerInfo);
     }
 }
@@ -98,6 +102,26 @@ public static class HelperSystem
             gameObjects[i].transform.position = positions[i];
         }
     }
+    public static void UpdateFire(bool[] wishFire, float[] fireCooldown, int size, ref BulletInfo bulletInfo, float deltaTime)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            fireCooldown[i] -= deltaTime;
+            if (!wishFire[i]) continue; // Don't shoot when user don't want to shoot
+            if (fireCooldown[i] < 0.0f)
+            {
+                fireCooldown[i] += 0.5f; // TODO: Refactor this magical number
+
+                int index = bulletInfo.size;
+                GameObject bullet = bulletInfo.gameObjects[index];
+                bulletInfo.size++;
+                bullet.transform.position = Vector3.up;
+                bullet.transform.LookAt(Vector3.up);
+                bullet.SetActive(true);
+                bulletInfo.wishDirections[index] = Vector3.up;
+            }
+        }
+    }
 }
 
 // Helps with making it show up in the inspector
@@ -108,4 +132,5 @@ public struct PlayerInputs
     public KeyCode downKey;
     public KeyCode leftKey;
     public KeyCode rightKey;
+    public KeyCode fireKey;
 }

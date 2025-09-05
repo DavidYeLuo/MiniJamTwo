@@ -13,11 +13,14 @@ public struct PlayerInfo
     public Vector3[] velocities;
     public float[] baseSpeed;
     public float[] bonusSpeed;
+    public bool[] wishFire;
+    public float[] fireCooldown;
 
     public KeyCode[] upKeys;
     public KeyCode[] downKeys;
     public KeyCode[] leftKeys;
     public KeyCode[] rightKeys;
+    public KeyCode[] fireKeys;
 
     public int size; // Active entities
     public int capacity;
