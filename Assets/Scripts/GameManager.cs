@@ -18,6 +18,8 @@ public class GameManger : MonoBehaviour
     [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private int maxBullets;
+    [SerializeField] private float baseBulletSpeed;
+    [SerializeField] private Vector3 bulletSpawnOffset;
     private BulletInfo bulletInfo;
 
     // Start is called before the first frame update
@@ -40,24 +42,25 @@ public class GameManger : MonoBehaviour
             playerInfo.rightKeys[i] = playerInputs[i].rightKey;
             playerInfo.fireKeys[i] = playerInputs[i].fireKey;
         }
-        playerInfo.size = activePlayer;
 
-        bulletInfo.size = maxBullets / 2;
-        HelperSystem.RandomizeVectors(bulletInfo.positions, bulletInfo.size, new Vector2(-10, 10));
-        for (int i = 0; i < bulletInfo.size; i++)
+        for (int i = 0; i < bulletInfo.capacity; i++)
         {
-            bulletInfo.gameObjects[i].transform.position = bulletInfo.positions[i];
-            bulletInfo.gameObjects[i].SetActive(true);
+            bulletInfo.baseSpeed[i] = baseBulletSpeed;
+            bulletInfo.spawnOffsets[i] = bulletSpawnOffset;
         }
+        playerInfo.size = activePlayer;
     }
 
     void FixedUpdate()
     {
-        HelperSystem.UpdateFire(playerInfo.wishFire, playerInfo.fireCooldown, playerInfo.size, ref bulletInfo, Time.fixedDeltaTime);
+        HelperSystem.UpdateFire(playerInfo.positions, bulletInfo.spawnOffsets, playerInfo.wishFire, playerInfo.fireCooldown, playerInfo.size, ref bulletInfo, Time.fixedDeltaTime);
 
         HelperSystem.UpdateVelocity(playerInfo.velocities, playerInfo.wishDirections, playerInfo.baseSpeed, playerInfo.bonusSpeed, playerInfo.size, Time.fixedDeltaTime);
+        HelperSystem.UpdateVelocity(bulletInfo.velocities, bulletInfo.wishDirections, bulletInfo.baseSpeed, bulletInfo.bonusSpeed, bulletInfo.size, Time.fixedDeltaTime);
         HelperSystem.UpdatePosition(playerInfo.positions, playerInfo.velocities, playerInfo.size);
+        HelperSystem.UpdatePosition(bulletInfo.positions, bulletInfo.velocities, bulletInfo.size);
         HelperSystem.MoveGameObject(playerInfo.gameObjects, playerInfo.positions, playerInfo.velocities, playerInfo.size);
+        HelperSystem.MoveGameObject(bulletInfo.gameObjects, bulletInfo.positions, bulletInfo.velocities, bulletInfo.size);
     }
     // Update is called once per frame
     void Update()
@@ -102,7 +105,7 @@ public static class HelperSystem
             gameObjects[i].transform.position = positions[i];
         }
     }
-    public static void UpdateFire(bool[] wishFire, float[] fireCooldown, int size, ref BulletInfo bulletInfo, float deltaTime)
+    public static void UpdateFire(Vector3[] playerPosition, Vector3[] bulletSpawnOffset, bool[] wishFire, float[] fireCooldown, int size, ref BulletInfo bulletInfo, float deltaTime)
     {
         for (int i = 0; i < size; i++)
         {
@@ -115,9 +118,9 @@ public static class HelperSystem
                 int index = bulletInfo.size;
                 GameObject bullet = bulletInfo.gameObjects[index];
                 bulletInfo.size++;
-                bullet.transform.position = Vector3.up;
                 bullet.transform.LookAt(Vector3.up);
                 bullet.SetActive(true);
+                bulletInfo.positions[index] = playerPosition[i] + bulletSpawnOffset[index];
                 bulletInfo.wishDirections[index] = Vector3.up;
             }
         }

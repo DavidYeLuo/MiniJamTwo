@@ -459,7 +459,9 @@ MonoBehaviour:
     fireKey: 257
   playerBaseSpeed: 5
   bulletPrefab: {fileID: 6850314567491524841, guid: 2810a42e77b4927e2b6a507cf5ba6e8e, type: 3}
-  maxBullets: 64
+  maxBullets: 256
+  baseBulletSpeed: 1
+  bulletSpawnOffset: {x: 0, y: 2, z: 0}
 --- !u!4 &1127323649
 Transform:
   m_ObjectHideFlags: 0
