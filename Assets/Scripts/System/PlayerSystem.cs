@@ -28,6 +28,9 @@ public static class PlayerSystem
         info.wishFire = new bool[capacity];
         info.fireCooldown = new float[capacity];
 
+        info.health = new int[capacity];
+        info.maxHealth = new int[capacity];
+
         info.upKeys = new KeyCode[capacity];
         info.downKeys = new KeyCode[capacity];
         info.leftKeys = new KeyCode[capacity];

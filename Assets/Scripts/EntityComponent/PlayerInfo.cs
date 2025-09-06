@@ -16,6 +16,9 @@ public struct PlayerInfo
     public bool[] wishFire;
     public float[] fireCooldown;
 
+    public int[] health;
+    public int[] maxHealth;
+
     public KeyCode[] upKeys;
     public KeyCode[] downKeys;
     public KeyCode[] leftKeys;

@@ -42,8 +42,17 @@ public class GameManger : MonoBehaviour
             bulletInfo.baseSpeed[i] = basicBulletConfig.baseBulletSpeed;
             bulletInfo.spawnOffsets[i] = basicBulletConfig.bulletSpawnOffset;
             bulletInfo.baseLifeTimes[i] = basicBulletConfig.bulletLifeTime;
+
+            GameObject currentGameObject = bulletInfo.gameObjects[i];
+            TriggerNotifier notifier = currentGameObject.AddComponent<TriggerNotifier>();
+            notifier.onTriggerEvent += OnCollision; // No need to unsubscribe because the notifier handles it
         }
         playerInfo.size = playerConfig.activePlayer;
+    }
+    private void OnCollision(GameObject a, GameObject b)
+    {
+        // TODO: build entity architecture so that we can typecheck and handle the collision
+        Debug.LogFormat("Collision happened: {0} and {1}", a.GetInstanceID(), b.GetInstanceID());
     }
 
     void FixedUpdate()
