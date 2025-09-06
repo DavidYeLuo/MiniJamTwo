@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0646e2c3851afc3bc98018f3626759, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7529538154089312735, guid: 023853d8613035b569c5b4e8f549ed9c, type: 3}
+  playerPrefab: {fileID: 2628087380802597150, guid: 7fae023e531369bc89cf11d5eece7781, type: 3}
   activePlayer: 2
   maxPlayer: 4
   playerInputs:

@@ -115,7 +115,7 @@ public static class HelperSystem
                 int index = bulletInfo.size;
                 GameObject bullet = bulletInfo.gameObjects[index];
                 bulletInfo.size++;
-                bullet.transform.LookAt(Vector3.up);
+                bullet.transform.rotation = Quaternion.identity;
                 bullet.SetActive(true);
                 bulletInfo.positions[index] = playerPosition[i] + bulletSpawnOffset[index];
                 bulletInfo.wishDirections[index] = Vector3.up;
