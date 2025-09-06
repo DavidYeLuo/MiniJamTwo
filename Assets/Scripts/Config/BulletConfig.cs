@@ -11,5 +11,6 @@ namespace Config
         public int maxBullets;
         public float baseBulletSpeed;
         public Vector3 bulletSpawnOffset;
+        public float bulletLifeTime;
     }
 }

@@ -23,7 +23,27 @@ public static class BulletSystem
         info.baseSpeed = new float[capacity];
         info.bonusSpeed = new float[capacity];
 
+        info.baseLifeTimes = new float[capacity];
+        info.lifeTimes = new float[capacity];
+
         info.size = 0;
         info.capacity = capacity;
+    }
+    // Replace element at index with the last element
+    // NOTE: This doesn't swap the data
+    public static void Moveback(ref BulletInfo info, int index)
+    {
+        int last = info.size - 1;
+        GameObject temp = info.gameObjects[index];
+        info.gameObjects[index] = info.gameObjects[last];
+        info.gameObjects[last] = temp;
+        info.positions[index] = info.positions[last];
+        info.spawnOffsets[index] = info.spawnOffsets[last];
+        info.wishDirections[index] = info.wishDirections[last];
+        info.velocities[index] = info.velocities[last];
+        info.baseSpeed[index] = info.baseSpeed[last];
+        info.bonusSpeed[index] = info.bonusSpeed[last];
+        info.lifeTimes[index] = info.lifeTimes[last];
+        info.baseLifeTimes[index] = info.baseLifeTimes[last];
     }
 }

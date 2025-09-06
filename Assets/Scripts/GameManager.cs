@@ -41,6 +41,7 @@ public class GameManger : MonoBehaviour
         {
             bulletInfo.baseSpeed[i] = basicBulletConfig.baseBulletSpeed;
             bulletInfo.spawnOffsets[i] = basicBulletConfig.bulletSpawnOffset;
+            bulletInfo.baseLifeTimes[i] = basicBulletConfig.bulletLifeTime;
         }
         playerInfo.size = playerConfig.activePlayer;
     }
@@ -55,6 +56,8 @@ public class GameManger : MonoBehaviour
         HelperSystem.UpdatePosition(bulletInfo.positions, bulletInfo.velocities, bulletInfo.size);
         HelperSystem.MoveGameObject(playerInfo.gameObjects, playerInfo.positions, playerInfo.velocities, playerInfo.size);
         HelperSystem.MoveGameObject(bulletInfo.gameObjects, bulletInfo.positions, bulletInfo.velocities, bulletInfo.size);
+
+        HelperSystem.UpdateLifeTime(ref bulletInfo, Time.fixedDeltaTime);
     }
     // Update is called once per frame
     void Update()
@@ -116,6 +119,20 @@ public static class HelperSystem
                 bullet.SetActive(true);
                 bulletInfo.positions[index] = playerPosition[i] + bulletSpawnOffset[index];
                 bulletInfo.wishDirections[index] = Vector3.up;
+                bulletInfo.lifeTimes[index] = bulletInfo.baseLifeTimes[index];
+            }
+        }
+    }
+    public static void UpdateLifeTime(ref BulletInfo info, float deltaTime)
+    {
+        for (int i = 0; i < info.size; i++)
+        {
+            info.lifeTimes[i] -= deltaTime;
+            if (info.lifeTimes[i] < 0.0f)
+            {
+                info.gameObjects[i].SetActive(false);
+                BulletSystem.Moveback(ref info, i);
+                info.size--;
             }
         }
     }

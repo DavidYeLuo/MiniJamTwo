@@ -15,6 +15,9 @@ public struct BulletInfo
     public float[] baseSpeed;
     public float[] bonusSpeed;
 
+    public float[] lifeTimes;
+    public float[] baseLifeTimes;
+
     public int size;
     public int capacity;
 }
