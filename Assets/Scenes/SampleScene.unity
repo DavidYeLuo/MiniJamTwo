@@ -443,25 +443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfc285801ccf99bbb5ac4ef8977a386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7529538154089312735, guid: 023853d8613035b569c5b4e8f549ed9c, type: 3}
-  activePlayer: 2
-  maxPlayer: 4
-  playerInputs:
-  - upKey: 119
-    downKey: 115
-    leftKey: 97
-    rightKey: 100
-    fireKey: 106
-  - upKey: 273
-    downKey: 274
-    leftKey: 276
-    rightKey: 275
-    fireKey: 257
-  playerBaseSpeed: 5
-  bulletPrefab: {fileID: 6850314567491524841, guid: 2810a42e77b4927e2b6a507cf5ba6e8e, type: 3}
-  maxBullets: 256
-  baseBulletSpeed: 1
-  bulletSpawnOffset: {x: 0, y: 2, z: 0}
+  playerConfig: {fileID: 11400000, guid: aac1a537688193b25bc1927c74252d30, type: 2}
+  basicBulletConfig: {fileID: 11400000, guid: a965cb9972aa574759dde50120750ed3, type: 2}
 --- !u!4 &1127323649
 Transform:
   m_ObjectHideFlags: 0

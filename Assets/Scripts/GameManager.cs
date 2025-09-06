@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ECS;
+using Config;
 
 public class GameManger : MonoBehaviour
 {
     [Header("Player")]
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private int activePlayer;
-    [SerializeField] private int maxPlayer;
-    [SerializeField] private PlayerInputs[] playerInputs;
-    [SerializeField] private float playerBaseSpeed;
+    [SerializeField] private PlayerConfig playerConfig;
     private PlayerInfo playerInfo;
 
     [Space]
 
     [Header("Bullet")]
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private int maxBullets;
-    [SerializeField] private float baseBulletSpeed;
-    [SerializeField] private Vector3 bulletSpawnOffset;
+    [SerializeField] private BulletConfig basicBulletConfig;
     private BulletInfo bulletInfo;
 
     // Start is called before the first frame update
@@ -28,32 +22,32 @@ public class GameManger : MonoBehaviour
         playerInfo = new PlayerInfo();
         bulletInfo = new BulletInfo();
 
-        PlayerSystem.Init(ref playerInfo, playerPrefab, maxPlayer);
-        BulletSystem.Init(ref bulletInfo, bulletPrefab, maxBullets);
+        PlayerSystem.Init(ref playerInfo, playerConfig.playerPrefab, playerConfig.maxPlayer);
+        BulletSystem.Init(ref bulletInfo, basicBulletConfig.prefab, basicBulletConfig.maxBullets);
 
-        for (int i = 0; i < activePlayer; i++)
+        for (int i = 0; i < playerConfig.activePlayer; i++)
         {
             playerInfo.gameObjects[i].SetActive(true);
-            playerInfo.baseSpeed[i] = playerBaseSpeed;
+            playerInfo.baseSpeed[i] = playerConfig.playerBaseSpeed;
             // Bind playerInput to an entity
-            playerInfo.upKeys[i] = playerInputs[i].upKey;
-            playerInfo.downKeys[i] = playerInputs[i].downKey;
-            playerInfo.leftKeys[i] = playerInputs[i].leftKey;
-            playerInfo.rightKeys[i] = playerInputs[i].rightKey;
-            playerInfo.fireKeys[i] = playerInputs[i].fireKey;
+            playerInfo.upKeys[i] = playerConfig.playerInputs[i].upKey;
+            playerInfo.downKeys[i] = playerConfig.playerInputs[i].downKey;
+            playerInfo.leftKeys[i] = playerConfig.playerInputs[i].leftKey;
+            playerInfo.rightKeys[i] = playerConfig.playerInputs[i].rightKey;
+            playerInfo.fireKeys[i] = playerConfig.playerInputs[i].fireKey;
         }
 
         for (int i = 0; i < bulletInfo.capacity; i++)
         {
-            bulletInfo.baseSpeed[i] = baseBulletSpeed;
-            bulletInfo.spawnOffsets[i] = bulletSpawnOffset;
+            bulletInfo.baseSpeed[i] = basicBulletConfig.baseBulletSpeed;
+            bulletInfo.spawnOffsets[i] = basicBulletConfig.bulletSpawnOffset;
         }
-        playerInfo.size = activePlayer;
+        playerInfo.size = playerConfig.activePlayer;
     }
 
     void FixedUpdate()
     {
-        HelperSystem.UpdateFire(playerInfo.positions, bulletInfo.spawnOffsets, playerInfo.wishFire, playerInfo.fireCooldown, playerInfo.size, ref bulletInfo, Time.fixedDeltaTime);
+        HelperSystem.UpdateFire(playerInfo.positions, bulletInfo.spawnOffsets, playerInfo.wishFire, playerInfo.fireCooldown, playerInfo.size, ref bulletInfo, Time.deltaTime);
 
         HelperSystem.UpdateVelocity(playerInfo.velocities, playerInfo.wishDirections, playerInfo.baseSpeed, playerInfo.bonusSpeed, playerInfo.size, Time.fixedDeltaTime);
         HelperSystem.UpdateVelocity(bulletInfo.velocities, bulletInfo.wishDirections, bulletInfo.baseSpeed, bulletInfo.bonusSpeed, bulletInfo.size, Time.fixedDeltaTime);
@@ -113,7 +107,7 @@ public static class HelperSystem
             if (!wishFire[i]) continue; // Don't shoot when user don't want to shoot
             if (fireCooldown[i] < 0.0f)
             {
-                fireCooldown[i] += 0.5f; // TODO: Refactor this magical number
+                fireCooldown[i] = 0.5f; // TODO: Refactor this magical number
 
                 int index = bulletInfo.size;
                 GameObject bullet = bulletInfo.gameObjects[index];

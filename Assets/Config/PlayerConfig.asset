@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0646e2c3851afc3bc98018f3626759, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 7529538154089312735, guid: 023853d8613035b569c5b4e8f549ed9c, type: 3}
+  activePlayer: 2
+  maxPlayer: 4
+  playerInputs:
+  - upKey: 119
+    downKey: 115
+    leftKey: 97
+    rightKey: 100
+    fireKey: 106
+  - upKey: 273
+    downKey: 274
+    leftKey: 276
+    rightKey: 275
+    fireKey: 257
+  playerBaseSpeed: 2
